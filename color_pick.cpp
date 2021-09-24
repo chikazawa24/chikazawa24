@@ -11,36 +11,36 @@ using namespace std;
 
 int main(void)
 {
-	//‰f‘œ‚Ì“Ç‚İ‚İ//
+	//æ˜ åƒã®èª­ã¿è¾¼ã¿//
 
-	uchar hue, sat, val; // Hue, Saturation, Value‚ğ•\Œ»‚·‚é•Ï”
-	Mat src_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // ƒTƒCƒY‚ğw’è‚·‚é
-	Mat smooth_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // ƒmƒCƒY‚ğœ‹‚µ‚½‰f‘œ‚ğ•Û‘¶‚·‚é
-	Mat hsv_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // HSV‚É•ÏŠ·‚µ‚½‰f‘œ‚ğ•Û‘¶‚·‚é
+	uchar hue, sat, val; // Hue, Saturation, Valueã‚’è¡¨ç¾ã™ã‚‹å¤‰æ•°
+	Mat src_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // ã‚µã‚¤ã‚ºã‚’æŒ‡å®šã™ã‚‹
+	Mat smooth_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // ãƒã‚¤ã‚ºã‚’é™¤å»ã—ãŸæ˜ åƒã‚’ä¿å­˜ã™ã‚‹
+	Mat hsv_video(Size(640, 480), CV_8UC1, Scalar::all(255)); // HSVã«å¤‰æ›ã—ãŸæ˜ åƒã‚’ä¿å­˜ã™ã‚‹
 	Mat frame(Size(640, 480), CV_8UC1, Scalar::all(255));
-	Mat dst_img(Size(640, 480), CV_8UC1, Scalar::all(0)); // ”F¯Œ‹‰Ê‚ğ•\¦‚·‚é
+	Mat dst_img(Size(640, 480), CV_8UC1, Scalar::all(0)); // èªè­˜çµæœã‚’è¡¨ç¤ºã™ã‚‹
 
 	
 	char windowName[] = "!";
-	namedWindow(windowName, WINDOW_AUTOSIZE);//•\¦ƒEƒBƒ“ƒhƒE‚Ìİ’è
-	char hsvwindow[] = "HSV•ÏŠ·Œ‹‰Ê";
+	namedWindow(windowName, WINDOW_AUTOSIZE);//è¡¨ç¤ºã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®è¨­å®š
+	char hsvwindow[] = "HSVå¤‰æ›çµæœ";
 	namedWindow(hsvwindow, WINDOW_AUTOSIZE);
-	char dstwindow[] = "”F¯Œ‹‰Ê";
+	char dstwindow[] = "èªè­˜çµæœ";
 	namedWindow(dstwindow, WINDOW_AUTOSIZE);
 
-	// “®‰æƒtƒ@ƒCƒ‹‚ÌƒpƒX‚Ì•¶š—ñ‚ğŠi”[‚·‚éƒIƒuƒWƒFƒNƒg‚ğéŒ¾‚·‚é
-	std::string filepath = "C:/Users/81901/Desktop/Œ¤‹†º/Project1/wave.mp4";
-	// “®‰æƒtƒ@ƒCƒ‹‚ğæ‚è‚Ş‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg‚ğéŒ¾‚·‚é
+	// å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã®æ–‡å­—åˆ—ã‚’æ ¼ç´ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å®£è¨€ã™ã‚‹
+	std::string filepath = "C:/Users/81901/Desktop/ç ”ç©¶å®¤/Project1/wave.mp4";
+	// å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã‚’å–ã‚Šè¾¼ã‚€ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å®£è¨€ã™ã‚‹
 	cv::VideoCapture capture;
-	// “®‰æƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	// å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	capture.open(filepath);
 	if (capture.isOpened() == false) {
-		// “®‰æƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½‚Æ‚«‚ÍI—¹‚·‚é
+		// å‹•ç”»ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‹ã£ãŸã¨ãã¯çµ‚äº†ã™ã‚‹
 		return 0;
 	}
 
 	/*VideoCapture capture(0);
-	// ƒJƒƒ‰‚ªg‚¦‚È‚¢ê‡‚ÍƒvƒƒOƒ‰ƒ€‚ğ~‚ß‚é
+	// ã‚«ãƒ¡ãƒ©ãŒä½¿ãˆãªã„å ´åˆã¯ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’æ­¢ã‚ã‚‹
 	if (!capture.isOpened())
 		return -1;*/
 
@@ -48,7 +48,7 @@ int main(void)
 	while (waitKey(1) == -1)
 	{
 		dst_img = Scalar::all(0);
-		// ƒJƒƒ‰‚©‚ç1ƒtƒŒ[ƒ€æ“¾‚·‚é
+		// ã‚«ãƒ¡ãƒ©ã‹ã‚‰1ãƒ•ãƒ¬ãƒ¼ãƒ å–å¾—ã™ã‚‹
 		do {
 			capture >> frame;
 		} while (frame.empty());
@@ -56,19 +56,19 @@ int main(void)
 		src_video = frame;
 		imshow(windowName, src_video);
 
-		// HSV•\FŒn‚ÖFî•ñ‚ğ•ÏŠ·
-		// æ‚ÉƒmƒCƒY‚ğÁ‚µ‚Ä‚¨‚­
+		// HSVè¡¨è‰²ç³»ã¸è‰²æƒ…å ±ã‚’å¤‰æ›
+		// å…ˆã«ãƒã‚¤ã‚ºã‚’æ¶ˆã—ã¦ãŠã
 		medianBlur(src_video, smooth_video, 5);
 		cvtColor(smooth_video, hsv_video, COLOR_BGR2HSV);
 		imshow(hsvwindow, hsv_video);
 
-		// H,S,V‚Ì—v‘f‚É•ªŠ„‚·‚é
+		// H,S,Vã®è¦ç´ ã«åˆ†å‰²ã™ã‚‹
 		for (int y = 0; y < hsv_video.rows; y++) {
 			for (int x = 0; x < hsv_video.cols; x++) {
 				hue = hsv_video.at<Vec3b>(y, x)[0];
 				sat = hsv_video.at<Vec3b>(y, x)[1];
 				val = hsv_video.at<Vec3b>(y, x)[2];
-				// F‚ÌŒŸo
+				// è‰²ã®æ¤œå‡º
 				if ((hue < 35 && hue > 20) && sat > 127) {
 					dst_img.at<uchar>(y, x) = 255;
 				}
