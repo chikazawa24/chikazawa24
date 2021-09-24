@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @chikazawa24
 - 👀 I’m interested in System development and Game programming.
-- 🌱 I’m currently learning about eye tracking and tryng to develop Evaluation system with c++.
+- 🌱 I’m currently learning about eye tracking and tryng to develop Evaluation system with C++.
 - 💞️ I’m looking to collaborate on ...
 - 📫 How to reach me access to charlie24403@yahoo.co.jp.
 
